@@ -18,6 +18,7 @@ public class ControllerAgenda {
 
     ModelAgenda modelAgenda;
     ViewAgenda viewAgenda;
+    private String Desicion = "";
 
     /**
      * Objeto de tipo ActionListener para atrapar los eventos actionPerformed y
@@ -34,6 +35,16 @@ public class ControllerAgenda {
                 jbtn_siguiente_actionPerformed();
             } else if (e.getSource() == viewAgenda.jbtn_ultimo) {
                 jbtn_ultimo_actionPerformed();
+            } else if (e.getSource() == viewAgenda.jb_editar){
+                jb_editar_actionPerformend();
+            } else if (e.getSource() == viewAgenda.jb_eliminar){
+                jb_eliminar_actionPerformend();
+            } else if (e.getSource() == viewAgenda.jb_nuevo){
+                jb_nuevo_actionPerformend();
+            } else if (e.getSource() == viewAgenda.jb_guardar){
+                jb_guardar_actionPerformend();
+            } else if (e.getSource() == viewAgenda.jb_cancelar){
+                jb_cancelar_actionPerformend();
             }
 
         }
@@ -81,6 +92,11 @@ public class ControllerAgenda {
         viewAgenda.jbtn_anterior.addActionListener(actionListener);
         viewAgenda.jbtn_siguiente.addActionListener(actionListener);
         viewAgenda.jbtn_ultimo.addActionListener(actionListener);
+        viewAgenda.jb_nuevo.addActionListener(actionListener);
+        viewAgenda.jb_editar.addActionListener(actionListener);
+        viewAgenda.jb_guardar.addActionListener(actionListener);
+        viewAgenda.jb_cancelar.addActionListener(actionListener);
+        viewAgenda.jb_eliminar.addActionListener(actionListener);
     }
 
     /**
@@ -130,6 +146,68 @@ public class ControllerAgenda {
         //mostar email en la vista
         enviarVista();
     }
+    
+    
+    private void jb_guardar_actionPerformend(){
+        System.err.println("accion del boton guardar");
+        if(Desicion == "nuevo"){
+            modelAgenda.guardarRegistro(viewAgenda.jtf_email.getText(), viewAgenda.jtf_nombre.getText());
+        }else if (Desicion == "editar"){
+            modelAgenda.editarRegistro(viewAgenda.jtf_email.getText(), viewAgenda.jtf_nombre.getText());
+        }
+        viewAgenda.jtf_email.setEnabled(false);
+        viewAgenda.jtf_nombre.setEnabled(false);
+        viewAgenda.jb_eliminar.setEnabled(true);
+        viewAgenda.jb_nuevo.setEnabled(true);
+        viewAgenda.jb_editar.setEnabled(true);
+        viewAgenda.jb_guardar.setEnabled(false);
+        
+    }
+    
+    private void jb_eliminar_actionPerformend(){
+        System.err.println("accion del boton eliminar");
+        modelAgenda.eliminarRegistro();
+        viewAgenda.jtf_email.setText(modelAgenda.getEmail());
+        viewAgenda.jtf_nombre.setText(modelAgenda.getNombre());
+    }
+    
+    private void jb_nuevo_actionPerformend(){
+        System.err.println("accion del boton nuevo");
+        Desicion = "nuevo";
+        viewAgenda.jtf_email.setText("");
+        viewAgenda.jtf_nombre.setText("");
+        viewAgenda.jtf_email.setEnabled(true);
+        viewAgenda.jtf_nombre.setEnabled(true);
+        viewAgenda.jb_eliminar.setEnabled(false);
+        viewAgenda.jb_nuevo.setEnabled(false);
+        viewAgenda.jb_editar.setEnabled(false);
+        viewAgenda.jb_guardar.setEnabled(true);
+    }
+    
+    private void jb_editar_actionPerformend(){
+        System.err.println("accion del boton editar");
+        Desicion = "editar";
+        viewAgenda.jtf_email.setEnabled(true);
+        viewAgenda.jtf_nombre.setEnabled(true);
+        viewAgenda.jb_eliminar.setEnabled(false);
+        viewAgenda.jb_nuevo.setEnabled(false);
+        viewAgenda.jb_editar.setEnabled(false);
+        viewAgenda.jb_guardar.setEnabled(true);
+    }
+    
+    private void jb_cancelar_actionPerformend(){
+        viewAgenda.jtf_email.setEnabled(false);
+        viewAgenda.jtf_nombre.setEnabled(false);
+        viewAgenda.jtf_email.setText(modelAgenda.getEmail());
+        viewAgenda.jtf_nombre.setText(modelAgenda.getNombre());
+        viewAgenda.jb_eliminar.setEnabled(true);
+        viewAgenda.jb_nuevo.setEnabled(true);
+        viewAgenda.jb_editar.setEnabled(true);
+        viewAgenda.jb_guardar.setEnabled(false);
+    }
+    
+    
+    
     
     private void enviarVista(){
         viewAgenda.jtf_nombre.setText(modelAgenda.getNombre());
